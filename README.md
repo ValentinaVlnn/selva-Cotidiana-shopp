@@ -17,7 +17,7 @@ Este repositorio contiene la estructura inicial del proyecto, preparada para seg
 
 1. Clonar el repositorio:
    ```bash
-   git clone  https://github.com/ValentinaVlnn/Selva-Cotidiana-Shopp
+   git clone https://github.com/ValentinaVlnn/selva-Cotidiana-shopp.git
    ```
 
 2. Ingresar a la carpeta del proyecto:
@@ -49,12 +49,16 @@ Este repositorio contiene la estructura inicial del proyecto, preparada para seg
 - ItemListContainer
 - ItemList
 - Item
+- ItemDetailContainer
+- ItemDetail
+- ItemCount
 
 ## Carga de datos simulada
 
 Los productos se obtienen desde una promesa local en `src/mock/asyncMock.js`.
 La funcion `getProducts` resuelve el listado luego de 2 segundos usando `setTimeout` para simular una carga asincrona.
+La funcion `getProductById` recibe un id, busca el producto correspondiente y devuelve una promesa con el detalle individual.
 
 ## Estado del proyecto
 
-Pre-entrega 3: listado dinamico de productos implementado con `useEffect`, `useState`, promesa local y renderizado por componentes separados.
+Pre-entrega 4: vista de detalle implementada con `ItemDetailContainer`, `ItemDetail`, `ItemCount` reutilizable y promesa dinamica para buscar un producto por id.
