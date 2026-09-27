@@ -42,6 +42,12 @@ Este repositorio contiene la estructura inicial del proyecto, preparada para seg
 - `src/App.jsx`
 - `src/main.jsx`
 
+## Componentes creados
+
+- Navbar
+- CartWidget
+- ItemListContainer
+
 ## Estado del proyecto
 
-Pre-entrega 1: estructura base del e-commerce creada con Vite, contenido de ejemplo eliminado y organización inicial lista para próximas funcionalidades.
+Pre-entrega 2: estructura inicial del layout creada con componentes separados, navbar con categorías, cart widget y mensaje dinámico por props.

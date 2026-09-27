@@ -1,9 +1,12 @@
+import ItemListContainer from './components/ItemListContainer'
+import Navbar from './components/Navbar'
+
 const App = () => {
   return (
-    <div id="container">
-      <h1>Selva Cotidiana Shop</h1>
-      <p>Bienvenidos a nuestra tienda online.</p>
-    </div>
+    <>
+      <Navbar />
+      <ItemListContainer greeting="La selva en tu hogar" />
+    </>
   )
 }
 
