@@ -47,7 +47,14 @@ Este repositorio contiene la estructura inicial del proyecto, preparada para seg
 - Navbar
 - CartWidget
 - ItemListContainer
+- ItemList
+- Item
+
+## Carga de datos simulada
+
+Los productos se obtienen desde una promesa local en `src/mock/asyncMock.js`.
+La funcion `getProducts` resuelve el listado luego de 2 segundos usando `setTimeout` para simular una carga asincrona.
 
 ## Estado del proyecto
 
-Pre-entrega 2: estructura inicial del layout creada con componentes separados, navbar con categorías, cart widget y mensaje dinámico por props.
+Pre-entrega 3: listado dinamico de productos implementado con `useEffect`, `useState`, promesa local y renderizado por componentes separados.
