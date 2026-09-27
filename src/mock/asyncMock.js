@@ -2,7 +2,7 @@ const products = [
   {
     id: 1,
     name: 'Monstera Deliciosa',
-    price: 18500,
+    price: 2490,
     category: 'Plantas de interior',
     img: 'https://images.unsplash.com/photo-1545241047-6083a3684587?auto=format&fit=crop&w=800&q=80',
     stock: 8,
@@ -11,7 +11,7 @@ const products = [
   {
     id: 2,
     name: 'Sansevieria',
-    price: 12400,
+    price: 1790,
     category: 'Plantas de interior',
     img: 'https://images.unsplash.com/photo-1598880940080-ff9a29891b85?auto=format&fit=crop&w=800&q=80',
     stock: 12,
@@ -20,7 +20,7 @@ const products = [
   {
     id: 3,
     name: 'Cactus Mini',
-    price: 6900,
+    price: 590,
     category: 'Cactus',
     img: 'https://images.unsplash.com/photo-1459156212016-c812468e2115?auto=format&fit=crop&w=800&q=80',
     stock: 15,
@@ -29,7 +29,7 @@ const products = [
   {
     id: 4,
     name: 'Maceta de ceramica',
-    price: 9800,
+    price: 890,
     category: 'Macetas',
     img: 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&w=800&q=80',
     stock: 10,
