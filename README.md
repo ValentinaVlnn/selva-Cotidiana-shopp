@@ -17,12 +17,12 @@ Este repositorio contiene la estructura inicial del proyecto, preparada para seg
 
 1. Clonar el repositorio:
    ```bash
-   git clone <URL-del-repositorio>
+   git clone  https://github.com/ValentinaVlnn/Selva-Cotidiana-Shopp
    ```
 
 2. Ingresar a la carpeta del proyecto:
    ```bash
-   cd selva-cotidiana-shop
+   cd selva-cotidiana-shopp
    ```
 
 3. Instalar dependencias:
