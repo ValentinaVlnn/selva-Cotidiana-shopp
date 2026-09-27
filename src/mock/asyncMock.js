@@ -35,21 +35,26 @@ const products = [
     stock: 10,
     description: 'Maceta neutra y combinable, pensada para realzar plantas de interior.',
   },
-  {
-    id: 5,
-    name: 'Pothus',
-    price: 11300,
-    category: 'Plantas colgantes',
-    img: 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?auto=format&fit=crop&w=800&q=80',
-    stock: 7,
-    description: 'Planta colgante de crecimiento rapido, ideal para repisas y rincones luminosos.',
-  },
 ]
 
 export const getProducts = () => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(products)
+    }, 2000)
+  })
+}
+
+export const getProductById = (productId) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const product = products.find((item) => item.id === productId)
+
+      if (product) {
+        resolve(product)
+      } else {
+        reject(new Error('Producto no encontrado'))
+      }
     }, 2000)
   })
 }
