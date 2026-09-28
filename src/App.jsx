@@ -1,21 +1,22 @@
-import { useState } from 'react'
+import { Route, Routes } from 'react-router-dom'
 
-import ItemDetailContainer from './components/ItemDetailContainer'
+import Cart from './components/Cart'
+import Layout from './components/Layout'
 import ItemListContainer from './components/ItemListContainer'
-import Navbar from './components/Navbar'
+import ItemDetailContainer from './components/ItemDetailContainer'
+import NotFound from './components/NotFound'
 
 const App = () => {
-  const [selectedProductId, setSelectedProductId] = useState(null)
-
   return (
-    <>
-      <Navbar />
-      <ItemListContainer
-        greeting="La selva en tu hogar"
-        onSelectProduct={setSelectedProductId}
-      />
-      <ItemDetailContainer productId={selectedProductId} />
-    </>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route path="/" element={<ItemListContainer greeting="La selva en tu hogar" />} />
+        <Route path="/category/:categoryId" element={<ItemListContainer greeting="La selva en tu hogar" />} />
+        <Route path="/item/:id" element={<ItemDetailContainer />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    </Routes>
   )
 }
 

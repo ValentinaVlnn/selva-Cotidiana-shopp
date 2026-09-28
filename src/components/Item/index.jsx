@@ -1,4 +1,6 @@
-const Item = ({ item, onSelectProduct }) => {
+import { Link } from 'react-router-dom'
+
+const Item = ({ item }) => {
   return (
     <article className="item-card">
       <img src={item.img} alt={item.name} />
@@ -6,9 +8,9 @@ const Item = ({ item, onSelectProduct }) => {
         <h3>{item.name}</h3>
         <p className="item-category">{item.category}</p>
         <p className="item-price">${item.price}</p>
-        <button type="button" className="item-detail-button" onClick={() => onSelectProduct(item.id)}>
+        <Link className="item-detail-button" to={`/item/${item.id}`}>
           Ver detalle
-        </button>
+        </Link>
       </div>
     </article>
   )
