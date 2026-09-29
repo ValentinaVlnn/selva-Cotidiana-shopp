@@ -1,21 +1,20 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
-import { getProductById } from '../../mock/asyncMock'
+import { getProductById } from '../../firebase/bd'
 import ItemDetail from '../ItemDetail'
 
 const ItemDetailContainer = () => {
   const [product, setProduct] = useState(null)
   const [error, setError] = useState('')
   const { id } = useParams()
-  const productId = Number(id)
 
   useEffect(() => {
     const loadProduct = async () => {
       try {
         setProduct(null)
         setError('')
-        const productData = await getProductById(productId)
+        const productData = await getProductById(id)
         setProduct(productData)
       } catch (loadError) {
         setProduct(null)
@@ -24,7 +23,7 @@ const ItemDetailContainer = () => {
     }
 
     loadProduct()
-  }, [productId])
+  }, [id])
 
   return (
     <section className="item-detail-section">

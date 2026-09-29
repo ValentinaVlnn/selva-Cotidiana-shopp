@@ -48,9 +48,9 @@ const Cart = () => {
               <Link className="clear-cart-button" to="/">
                 Seguir comprando
               </Link>
-              <button type="button" className="checkout-button">
+              <Link className="checkout-button" to="/checkout">
                 Finalizar compra
-              </button>
+              </Link>
             </div>
           </div>
         </div>
