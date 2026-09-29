@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
-
-import { categories, getProducts } from '../../mock/asyncMock'
+import { getCategories, getProducts as getFirebaseProducts } from '../../firebase/bd'
 import ItemList from '../ItemList'
 
 const ItemListContainer = ({ greeting }) => {
   const [items, setItems] = useState([])
+  const [categories, setCategories] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const { categoryId } = useParams()
   const location = useLocation()
@@ -13,21 +13,21 @@ const ItemListContainer = ({ greeting }) => {
   const redirectMessage = location.state?.message
 
   useEffect(() => {
-    const loadProducts = async () => {
-      setIsLoading(true)
+    getCategories().then((firebaseCategories) => {
+      setCategories(firebaseCategories)
+    })
+  }, [])
 
-      const products = await getProducts()
+  useEffect(() => {
+    setIsLoading(true)
 
-      if (categoryId) {
-        setItems(products.filter((product) => product.categoryId === categoryId))
-      } else {
+    getFirebaseProducts(categoryId)
+      .then((products) => {
         setItems(products)
-      }
-
-      setIsLoading(false)
-    }
-
-    loadProducts()
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }, [categoryId])
 
   return (

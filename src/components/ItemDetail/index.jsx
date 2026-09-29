@@ -6,11 +6,14 @@ import ItemCount from '../ItemCount'
 
 const ItemDetail = ({ product }) => {
   const { addItem } = useCart()
-  const [quantity, setQuantity] = useState(product.stock > 0 ? 1 : 0)
+  const parsedStock = Number(product.stock)
+  const hasValidStock = Number.isFinite(parsedStock) && parsedStock >= 0
+  const availableStock = hasValidStock ? parsedStock : Infinity
+  const [quantity, setQuantity] = useState(hasValidStock && availableStock === 0 ? 0 : 1)
 
   const handleIncrement = () => {
     setQuantity((currentQuantity) => {
-      if (currentQuantity < product.stock) {
+      if (currentQuantity < availableStock) {
         return currentQuantity + 1
       }
 
@@ -56,7 +59,7 @@ const ItemDetail = ({ product }) => {
               type="button"
               className="add-to-cart-button"
               onClick={() => handleAddToCart(quantity)}
-              disabled={product.stock === 0 || quantity === 0}
+              disabled={(hasValidStock && availableStock === 0) || quantity === 0}
             >
               Agregar al carrito
             </button>

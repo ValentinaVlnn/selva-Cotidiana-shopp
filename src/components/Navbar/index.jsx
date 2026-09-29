@@ -1,9 +1,18 @@
+import { useEffect, useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 
-import { categories } from '../../mock/asyncMock'
+import { getCategories } from '../../firebase/bd'
 import CartWidget from '../CartWidget'
 
 const Navbar = () => {
+  const [categories, setCategories] = useState([])
+
+  useEffect(() => {
+    getCategories().then((firebaseCategories) => {
+      setCategories(firebaseCategories)
+    })
+  }, [])
+
   return (
     <header className="navbar">
       <Link className="navbar-brand" to="/">
