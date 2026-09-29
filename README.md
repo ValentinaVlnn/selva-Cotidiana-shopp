@@ -72,4 +72,4 @@ La carga de datos se simula en `src/mock/asyncMock.js` con promesas y `setTimeou
 
 ## Estado actual
 
-Checkpoint 3 de navegación completo: catálogo con routing, categorías dinámicas, detalle de producto, layout persistente, ruta de error y flujo de compra simplificado entre detalle y carrito.
+Entrega 6 de navegación completo: catálogo con routing, categorías dinámicas, detalle de producto, layout persistente, ruta de error y flujo de compra simplificado entre detalle y carrito.

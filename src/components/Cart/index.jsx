@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useCart } from '../../context/useCart'
 
 const Cart = () => {
-  const { cart, removeItem, totalPrice } = useCart()
+  const { cart, removeItem, clear, totalPrice } = useCart()
 
   return (
     <section className="cart-page">
@@ -42,6 +42,9 @@ const Cart = () => {
           <div className="cart-summary">
             <p>Total: ${totalPrice}</p>
             <div className="cart-actions">
+              <button type="button" className="clear-cart-button" onClick={clear}>
+                Vaciar carrito
+              </button>
               <Link className="clear-cart-button" to="/">
                 Seguir comprando
               </Link>
