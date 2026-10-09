@@ -1,7 +1,6 @@
-import { addDoc, collection, doc, getDoc, getDocs, getFirestore, query, serverTimestamp, where } from "firebase/firestore";
-import { app } from './config'
+import { addDoc, collection, doc, getDoc, getDocs, query, serverTimestamp, where } from 'firebase/firestore'
 
-const db = getFirestore(app)
+import { db } from './config'
 
 const formatCategoryId = (categoryName) => {
   return categoryName
@@ -32,7 +31,7 @@ export async function getProducts(categoryId) {
     return products
   } catch (error) {
     console.error('Error al obtener la coleccion:', error)
-    return []
+    throw new Error('No se pudieron cargar los productos.')
   }
 }
 
@@ -75,7 +74,7 @@ export async function getCategories() {
     return categories
   } catch (error) {
     console.error('Error al obtener las categorias:', error)
-    return categories
+    throw new Error('No se pudieron cargar las categorias.')
   }
 }
 

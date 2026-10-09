@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
+import { useAuth } from '../../context/useAuth'
 import { createOrder } from '../../firebase/bd'
 import { useCart } from '../../context/useCart'
 
@@ -14,11 +15,27 @@ const initialForm = {
 
 const Checkout = () => {
   const { cart, totalPrice, clear } = useCart()
+  const { currentUser } = useAuth()
   const [form, setForm] = useState(initialForm)
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [orderId, setOrderId] = useState('')
+
+  useEffect(() => {
+    if (currentUser?.displayName) {
+      setForm((currentForm) => {
+        if (currentForm.fullName) {
+          return currentForm
+        }
+
+        return {
+          ...currentForm,
+          fullName: currentUser.displayName,
+        }
+      })
+    }
+  }, [currentUser])
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -35,10 +52,27 @@ const Checkout = () => {
     setIsSubmitting(true)
     setError('')
 
+    if (!currentUser) {
+      setError('Debes iniciar sesion para completar la compra.')
+      setIsSubmitting(false)
+      return
+    }
+
+    if (cart.length === 0) {
+      setError('No hay productos en el carrito para generar la orden.')
+      setIsSubmitting(false)
+      return
+    }
+
     const orderData = {
+      user: {
+        uid: currentUser.uid,
+        email: currentUser.email,
+        displayName: currentUser.displayName || '',
+      },
       buyer: {
         fullName: form.fullName,
-        email: form.email,
+        email: currentUser.email,
         phone: form.phone,
         address: form.address,
         deliveryWindow: form.deliveryWindow,
@@ -132,9 +166,9 @@ const Checkout = () => {
             id="email"
             name="email"
             type="email"
-            value={form.email}
-            onChange={handleChange}
-            required
+            value={currentUser?.email || ''}
+            readOnly
+            disabled
           />
 
           <label htmlFor="phone">Numero de telefono</label>
