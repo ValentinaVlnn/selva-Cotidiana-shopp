@@ -1,12 +1,31 @@
-import { initializeApp } from "firebase/app";
+import { getAuth } from 'firebase/auth'
+import { initializeApp } from 'firebase/app'
+import { getFirestore } from 'firebase/firestore'
+
+const requiredEnvVars = [
+  'VITE_FIREBASE_API_KEY',
+  'VITE_FIREBASE_AUTH_DOMAIN',
+  'VITE_FIREBASE_PROJECT_ID',
+  'VITE_FIREBASE_STORAGE_BUCKET',
+  'VITE_FIREBASE_MESSAGING_SENDER_ID',
+  'VITE_FIREBASE_APP_ID',
+]
+
+const missingEnvVars = requiredEnvVars.filter((envVar) => !import.meta.env[envVar])
+
+if (missingEnvVars.length > 0) {
+  throw new Error(`Faltan variables de entorno de Firebase: ${missingEnvVars.join(', ')}`)
+}
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDW5Qkqs7dlsF4AFAjteG_pQRM3zvlgxbk",
-  authDomain: "selva-cotidiana-shop.firebaseapp.com",
-  projectId: "selva-cotidiana-shop",
-  storageBucket: "selva-cotidiana-shop.firebasestorage.app",
-  messagingSenderId: "944753558028",
-  appId: "1:944753558028:web:7d61c8068fa20dd2712429"
-};
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+}
 
-export const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig)
+export const db = getFirestore(app)
+export const auth = getAuth(app)
