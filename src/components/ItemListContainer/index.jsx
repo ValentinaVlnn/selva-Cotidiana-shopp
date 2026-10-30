@@ -21,7 +21,7 @@ const ItemListContainer = ({ greeting }) => {
         setCategories(firebaseCategories)
       } catch (loadError) {
         setCategories([])
-        setError(loadError.message || 'Ocurrio un error al cargar las categorias.')
+        setError(loadError.message || 'Ocurrió un error al cargar las categorías.')
       }
     }
 
@@ -37,7 +37,7 @@ const ItemListContainer = ({ greeting }) => {
         setItems(products)
       } catch (loadError) {
         setItems([])
-        setError(loadError.message || 'Ocurrio un error al cargar los productos.')
+        setError(loadError.message || 'Ocurrió un error al cargar los productos.')
       } finally {
         setIsLoading(false)
       }
@@ -54,7 +54,7 @@ const ItemListContainer = ({ greeting }) => {
       {isLoading ? <p className="loading-message">Cargando productos...</p> : null}
       {!isLoading && !error && items.length === 0 ? (
         <p className="empty-message">
-          No encontramos productos en {currentCategory ? currentCategory.label : 'esta categoria'}.
+          No encontramos productos en {currentCategory ? currentCategory.label : 'esta categoría'}.
         </p>
       ) : null}
       {!error ? <ItemList items={items} /> : null}

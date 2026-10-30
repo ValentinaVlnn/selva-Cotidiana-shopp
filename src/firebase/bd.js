@@ -13,6 +13,17 @@ const formatCategoryId = (categoryName) => {
     .replace(/^-|-$/g, '')
 }
 
+// Tolera claves con espacios o ":" sobrantes cargadas a mano en Firestore (" name", "category:")
+const normalizeProduct = (id, data) => {
+  const product = {}
+
+  Object.entries(data).forEach(([key, value]) => {
+    product[key.trim().replace(/:$/, '')] = value
+  })
+
+  return { ...product, id }
+}
+
 export async function getProducts(categoryId) {
   const collectionRef = collection(db, 'products')
   const products = []
@@ -25,34 +36,29 @@ export async function getProducts(categoryId) {
     const querySnapshot = await getDocs(productsQuery)
 
     querySnapshot.forEach((doc) => {
-      products.push({ ...doc.data(), id: doc.id })
+      products.push(normalizeProduct(doc.id, doc.data()))
     })
 
     return products
   } catch (error) {
-    console.error('Error al obtener la coleccion:', error)
-    throw new Error('No se pudieron cargar los productos.')
+    throw new Error('No se pudieron cargar los productos.', { cause: error })
   }
 }
 
 export async function getProductById(productId) {
-  const productRef = doc(db, 'products', productId)
+  let productSnapshot
 
   try {
-    const productSnapshot = await getDoc(productRef)
-
-    if (!productSnapshot.exists()) {
-      throw new Error('Producto no encontrado')
-    }
-
-    return {
-      id: productSnapshot.id,
-      ...productSnapshot.data(),
-    }
+    productSnapshot = await getDoc(doc(db, 'products', productId))
   } catch (error) {
-    console.error('Error al obtener el producto:', error)
-    throw error
+    throw new Error('No se pudo cargar el producto.', { cause: error })
   }
+
+  if (!productSnapshot.exists()) {
+    throw new Error('El producto que buscás no existe.')
+  }
+
+  return normalizeProduct(productSnapshot.id, productSnapshot.data())
 }
 
 export async function getCategories() {
@@ -73,21 +79,15 @@ export async function getCategories() {
 
     return categories
   } catch (error) {
-    console.error('Error al obtener las categorias:', error)
-    throw new Error('No se pudieron cargar las categorias.')
+    throw new Error('No se pudieron cargar las categorías.', { cause: error })
   }
 }
 
 export async function createOrder(orderData) {
-  try {
-    const docRef = await addDoc(collection(db, 'orders'), {
-      ...orderData,
-      createdAt: serverTimestamp(),
-    })
+  const docRef = await addDoc(collection(db, 'orders'), {
+    ...orderData,
+    createdAt: serverTimestamp(),
+  })
 
-    return docRef.id
-  } catch (error) {
-    console.error('Error al crear la orden:', error)
-    throw error
-  }
+  return docRef.id
 }

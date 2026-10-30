@@ -309,6 +309,12 @@ a {
   line-height: 1.6;
 }
 
+.item-detail-stock {
+  margin: 0 0 1rem;
+  color: #6c7b63;
+  font-weight: 600;
+}
+
 .item-detail-actions {
   display: flex;
   flex-direction: column;

@@ -5,35 +5,26 @@ import { useCart } from '../../context/useCart'
 import ItemCount from '../ItemCount'
 
 const ItemDetail = ({ product }) => {
-  const { addItem } = useCart()
+  const { addItem, getItemQuantity } = useCart()
   const parsedStock = Number(product.stock)
   const hasValidStock = Number.isFinite(parsedStock) && parsedStock >= 0
-  const availableStock = hasValidStock ? parsedStock : Infinity
-  const [quantity, setQuantity] = useState(hasValidStock && availableStock === 0 ? 0 : 1)
+  const quantityInCart = getItemQuantity(product.id)
+  const remainingStock = hasValidStock ? Math.max(parsedStock - quantityInCart, 0) : Infinity
+  const [selectedQuantity, setSelectedQuantity] = useState(1)
+  const quantity = remainingStock === 0 ? 0 : Math.min(selectedQuantity, remainingStock)
 
   const handleIncrement = () => {
-    setQuantity((currentQuantity) => {
-      if (currentQuantity < availableStock) {
-        return currentQuantity + 1
-      }
-
-      return currentQuantity
-    })
+    setSelectedQuantity(Math.min(quantity + 1, remainingStock))
   }
 
   const handleDecrement = () => {
-    setQuantity((currentQuantity) => {
-      if (currentQuantity > 1) {
-        return currentQuantity - 1
-      }
-
-      return currentQuantity
-    })
+    setSelectedQuantity(Math.max(quantity - 1, 1))
   }
 
-  const handleAddToCart = (quantity) => {
+  const handleAddToCart = () => {
     if (quantity > 0) {
       addItem(product, quantity)
+      setSelectedQuantity(1)
     }
   }
 
@@ -48,6 +39,13 @@ const ItemDetail = ({ product }) => {
         <p className="item-detail-category">{product.category}</p>
         <p className="item-detail-price">${product.price}</p>
         <p className="item-detail-description">{product.description}</p>
+        {hasValidStock ? (
+          <p className="item-detail-stock">
+            {remainingStock === 0
+              ? 'Ya agregaste todo el stock disponible de este producto.'
+              : `Stock disponible: ${remainingStock}`}
+          </p>
+        ) : null}
         <div className="item-detail-actions">
           <ItemCount
             count={quantity}
@@ -58,8 +56,8 @@ const ItemDetail = ({ product }) => {
             <button
               type="button"
               className="add-to-cart-button"
-              onClick={() => handleAddToCart(quantity)}
-              disabled={(hasValidStock && availableStock === 0) || quantity === 0}
+              onClick={handleAddToCart}
+              disabled={quantity === 0}
             >
               Agregar al carrito
             </button>

@@ -17,7 +17,8 @@ const App = () => {
         <Route path="/category/:categoryId" element={<ItemListContainer greeting="La selva en tu hogar" />} />
         <Route path="/item/:id" element={<ItemDetailContainer />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/login" element={<Auth />} />
+        <Route path="/login" element={<Auth key="login" mode="login" />} />
+        <Route path="/register" element={<Auth key="register" mode="register" />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/checkout" element={<Checkout />} />
         </Route>
