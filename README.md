@@ -4,7 +4,7 @@ E-commerce desarrollado con React, Vite, React Router DOM y Firebase Firestore.
 
 ## Descripción
 
-Selva Cotidiana Shop es una tienda online de plantas y macetas. El proyecto incluye catálogo de productos, navegación por categorías, detalle individual, carrito global con Context API y una estructura simple pensada para las pre-entregas del curso.
+Selva Cotidiana Shop es una tienda online de plantas y macetas con catálogo, categorías, detalle de producto, carrito global, registro e inicio de sesión, checkout condicional y generación de órdenes en Firestore.
 
 ## Tecnologías utilizadas
 
@@ -46,7 +46,7 @@ Si alguna falta, la app detiene la inicialización y muestra un error claro desd
 - Detalle individual de producto en `/item/:id`.
 - Layout persistente con `Navbar`, `Footer` y `CartWidget` visibles en todas las rutas.
 - Ruta 404 con componente `NotFound` para URLs inexistentes.
-- Registro e inicio de sesión con email y contraseña mediante Firebase Authentication.
+- Rutas `/login` y `/register`. Registro e inicio de sesión con email y contraseña mediante Firebase Authentication.
 - Persistencia de sesión con `onAuthStateChanged` y cierre de sesión desde la barra de navegación.
 - Carrito global manejado con Context API.
 - Agregado, eliminación y vaciado de productos en el carrito.
@@ -61,7 +61,6 @@ Si alguna falta, la app detiene la inicialización y muestra un error claro desd
 - `src/context/CartContext.jsx`: estado global del carrito.
 - `src/firebase/config.js`: inicialización de Firebase con variables de entorno.
 - `src/firebase/bd.js`: consultas y escrituras a Firestore.
-- `src/mock/asyncMock.js`: dataset mock auxiliar para pruebas puntuales.
 - `src/components/Auth/index.jsx`: pantalla de registro e inicio de sesión.
 - `src/components/Navbar/index.jsx`: navegación principal y acceso al carrito.
 - `src/components/ProtectedRoute/index.jsx`: protección de rutas para checkout autenticado.
@@ -130,6 +129,11 @@ Las órdenes se crean desde checkout con esta forma:
 }
 ```
 
-## Estado actual
+## Despliegue en Vercel
 
-El proyecto ya trabaja sobre Firestore para catálogo, categorías y órdenes. También mantiene un dataset mock aislado para pruebas manuales, pero el flujo principal de la aplicación consume Firebase.
+1. Importar el repositorio desde GitHub en Vercel (preset Vite).
+2. Cargar las seis variables `VITE_FIREBASE_*` en Settings → Environment Variables.
+3. Agregar el dominio `*.vercel.app` generado en Firebase Authentication → Settings → Authorized domains.
+4. [`vercel.json`](./vercel.json) redirige todas las rutas a `index.html` para que las rutas internas funcionen al recargar.
+
+URL pública: _completar con la URL de Vercel_

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { useAuth } from '../../context/useAuth'
@@ -6,7 +6,7 @@ import { createOrder } from '../../firebase/bd'
 import { useCart } from '../../context/useCart'
 
 const initialForm = {
-  fullName: '',
+  fullName: null,
   email: '',
   phone: '',
   address: '',
@@ -22,20 +22,7 @@ const Checkout = () => {
   const [error, setError] = useState('')
   const [orderId, setOrderId] = useState('')
 
-  useEffect(() => {
-    if (currentUser?.displayName) {
-      setForm((currentForm) => {
-        if (currentForm.fullName) {
-          return currentForm
-        }
-
-        return {
-          ...currentForm,
-          fullName: currentUser.displayName,
-        }
-      })
-    }
-  }, [currentUser])
+  const fullName = form.fullName ?? currentUser?.displayName ?? ''
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -53,13 +40,19 @@ const Checkout = () => {
     setError('')
 
     if (!currentUser) {
-      setError('Debes iniciar sesion para completar la compra.')
+      setError('Debés iniciar sesión para completar la compra.')
       setIsSubmitting(false)
       return
     }
 
     if (cart.length === 0) {
       setError('No hay productos en el carrito para generar la orden.')
+      setIsSubmitting(false)
+      return
+    }
+
+    if (!fullName.trim() || !form.phone.trim() || !form.address.trim()) {
+      setError('Completá todos los datos obligatorios de entrega.')
       setIsSubmitting(false)
       return
     }
@@ -71,10 +64,10 @@ const Checkout = () => {
         displayName: currentUser.displayName || '',
       },
       buyer: {
-        fullName: form.fullName,
+        fullName: fullName.trim(),
         email: currentUser.email,
-        phone: form.phone,
-        address: form.address,
+        phone: form.phone.trim(),
+        address: form.address.trim(),
         deliveryWindow: form.deliveryWindow,
       },
       items: cart.map((item) => ({
@@ -92,7 +85,7 @@ const Checkout = () => {
       setIsSubmitted(true)
       clear()
     } catch {
-      setError('Ocurrio un error al procesar tu compra. Intenta nuevamente.')
+      setError('Ocurrió un error al procesar tu compra. Tu carrito se conserva, intentá nuevamente.')
     } finally {
       setIsSubmitting(false)
     }
@@ -103,10 +96,10 @@ const Checkout = () => {
       <section className="checkout-page">
         <h2>Checkout</h2>
         <div className="checkout-empty">
-          <p className="checkout-success-message">¡Tu compra se ha realizado con exito!</p>
+          <p className="checkout-success-message">¡Tu compra se ha realizado con éxito!</p>
           <p className="checkout-order-id">ID de la orden: {orderId}</p>
           <Link className="checkout-back-link" to="/">
-            Volver al catalogo
+            Volver al catálogo
           </Link>
         </div>
       </section>
@@ -120,7 +113,7 @@ const Checkout = () => {
         <div className="checkout-empty">
           <p>No hay productos en el carrito para completar la compra.</p>
           <Link className="checkout-back-link" to="/">
-            Volver al catalogo
+            Volver al catálogo
           </Link>
         </div>
       </section>
@@ -156,7 +149,7 @@ const Checkout = () => {
             id="fullName"
             name="fullName"
             type="text"
-            value={form.fullName}
+            value={fullName}
             onChange={handleChange}
             required
           />
@@ -171,7 +164,7 @@ const Checkout = () => {
             disabled
           />
 
-          <label htmlFor="phone">Numero de telefono</label>
+          <label htmlFor="phone">Número de teléfono</label>
           <input
             id="phone"
             name="phone"
@@ -181,7 +174,7 @@ const Checkout = () => {
             required
           />
 
-          <label htmlFor="address">Direccion de entrega</label>
+          <label htmlFor="address">Dirección de entrega</label>
           <input
             id="address"
             name="address"
@@ -199,12 +192,12 @@ const Checkout = () => {
             onChange={handleChange}
             required
           >
-            <option value="manana-9:00-13:00">Manana 9:00 13:00</option>
-            <option value="tarde-15:00-19:00">Tarde-15:00 19:00</option>
+            <option value="manana-9:00-13:00">Mañana (9:00 a 13:00)</option>
+            <option value="tarde-15:00-19:00">Tarde (15:00 a 19:00)</option>
           </select>
 
-          <button type="submit" className="checkout-submit-button">
-            {isSubmitting ? 'Procesando compra...' : 'Confirmar datos'}
+          <button type="submit" className="checkout-submit-button" disabled={isSubmitting}>
+            {isSubmitting ? 'Procesando compra...' : 'Confirmar compra'}
           </button>
 
           {error ? <p className="checkout-error-message">{error}</p> : null}

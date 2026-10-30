@@ -6,20 +6,27 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([])
 
   const addItem = (item, quantity) => {
+    const stock = Number(item.stock)
+    const maxQuantity = Number.isFinite(stock) ? stock : Infinity
+
     setCart((prevCart) => {
       const existingItem = prevCart.find((product) => product.id === item.id)
 
       if (existingItem) {
         return prevCart.map((product) =>
           product.id === item.id
-            ? { ...product, quantity: product.quantity + quantity }
+            ? { ...product, quantity: Math.min(product.quantity + quantity, maxQuantity) }
             : product,
         )
       }
 
-      return [...prevCart, { ...item, quantity }]
+      const newQuantity = Math.min(quantity, maxQuantity)
+
+      return newQuantity > 0 ? [...prevCart, { ...item, quantity: newQuantity }] : prevCart
     })
   }
+
+  const getItemQuantity = (id) => cart.find((product) => product.id === id)?.quantity ?? 0
 
   const removeItem = (itemId) => {
     setCart((prevCart) => prevCart.filter((product) => product.id !== itemId))
@@ -36,7 +43,7 @@ export const CartProvider = ({ children }) => {
 
   return (
     <CartContext.Provider
-      value={{ cart, addItem, removeItem, clear, isInCart, totalItems, totalPrice }}
+      value={{ cart, addItem, removeItem, clear, isInCart, getItemQuantity, totalItems, totalPrice }}
     >
       {children}
     </CartContext.Provider>

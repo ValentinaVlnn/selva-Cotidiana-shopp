@@ -18,7 +18,7 @@ const Navbar = () => {
         setCategories(firebaseCategories)
       } catch (loadError) {
         setCategories([])
-        setError(loadError.message || 'No se pudieron cargar las categorias.')
+        setError(loadError.message || 'No se pudieron cargar las categorías.')
       }
     }
 
@@ -40,19 +40,24 @@ const Navbar = () => {
         </nav>
         {error ? <p className="navbar-error-message">{error}</p> : null}
         <div className="navbar-account">
-          {isAuthLoading ? <p className="navbar-user">Validando sesion...</p> : null}
+          {isAuthLoading ? <p className="navbar-user">Validando sesión...</p> : null}
           {!isAuthLoading && currentUser ? (
             <>
               <p className="navbar-user">{currentUser.email}</p>
               <button type="button" className="navbar-auth-button" onClick={logoutUser}>
-                Cerrar sesion
+                Cerrar sesión
               </button>
             </>
           ) : null}
           {!isAuthLoading && !currentUser ? (
-            <Link className="navbar-auth-button" to="/login">
-              Iniciar sesion
-            </Link>
+            <>
+              <Link className="navbar-auth-button" to="/login">
+                Iniciar sesión
+              </Link>
+              <Link className="navbar-auth-button" to="/register">
+                Registrarse
+              </Link>
+            </>
           ) : null}
         </div>
         <CartWidget />

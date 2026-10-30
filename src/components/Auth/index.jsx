@@ -14,30 +14,30 @@ const getAuthErrorMessage = (errorCode, isRegisterMode) => {
     case 'auth/email-already-in-use':
       return 'Ya existe una cuenta registrada con ese email.'
     case 'auth/invalid-email':
-      return 'El email ingresado no es valido.'
+      return 'El email ingresado no es válido.'
     case 'auth/user-not-found':
     case 'auth/invalid-credential':
-      return 'Credenciales incorrectas. Verifica tu email y contrasena.'
+      return 'Credenciales incorrectas. Verificá tu email y contraseña.'
     case 'auth/weak-password':
-      return 'La contrasena debe tener al menos 6 caracteres.'
+      return 'La contraseña debe tener al menos 6 caracteres.'
     case 'auth/too-many-requests':
-      return 'Se bloquearon temporalmente los intentos. Intenta nuevamente mas tarde.'
+      return 'Se bloquearon temporalmente los intentos. Intentá nuevamente más tarde.'
     default:
       return isRegisterMode
-        ? 'No se pudo crear la cuenta. Intenta nuevamente.'
-        : 'No se pudo iniciar sesion. Intenta nuevamente.'
+        ? 'No se pudo crear la cuenta. Intentá nuevamente.'
+        : 'No se pudo iniciar sesión. Intentá nuevamente.'
   }
 }
 
-const Auth = () => {
+const Auth = ({ mode = 'login' }) => {
   const { loginUser, registerUser, isAuthLoading } = useAuth()
   const [form, setForm] = useState(initialForm)
-  const [isRegisterMode, setIsRegisterMode] = useState(false)
+  const isRegisterMode = mode === 'register'
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
   const location = useLocation()
   const navigate = useNavigate()
-  const redirectPath = location.state?.from?.pathname || '/checkout'
+  const redirectPath = location.state?.from?.pathname || '/'
   const redirectMessage = location.state?.message
 
   const handleChange = (event) => {
@@ -66,8 +66,8 @@ const Auth = () => {
         replace: true,
         state: {
           message: isRegisterMode
-            ? 'Cuenta creada correctamente. Ya puedes finalizar tu compra.'
-            : 'Sesion iniciada correctamente.',
+            ? 'Cuenta creada correctamente. Ya podés finalizar tu compra.'
+            : 'Sesión iniciada correctamente.',
         },
       })
     } catch (authError) {
@@ -81,16 +81,16 @@ const Auth = () => {
     <section className="auth-page">
       <div className="auth-card">
         <p className="auth-eyebrow">Cuenta</p>
-        <h2>{isRegisterMode ? 'Crear cuenta' : 'Iniciar sesion'}</h2>
+        <h2>{isRegisterMode ? 'Crear cuenta' : 'Iniciar sesión'}</h2>
         <p className="auth-description">
           {isRegisterMode
-            ? 'Registrate con email y contrasena para poder continuar con el checkout.'
-            : 'Ingresa con tu cuenta para acceder al checkout y confirmar tu compra.'}
+            ? 'Registrate con email y contraseña para poder continuar con el checkout.'
+            : 'Ingresá con tu cuenta para acceder al checkout y confirmar tu compra.'}
         </p>
 
         {redirectMessage ? <p className="auth-feedback-message">{redirectMessage}</p> : null}
         {error ? <p className="auth-error-message">{error}</p> : null}
-        {isAuthLoading ? <p className="auth-loading-message">Validando sesion actual...</p> : null}
+        {isAuthLoading ? <p className="auth-loading-message">Validando sesión actual...</p> : null}
 
         <form className="auth-form" onSubmit={handleSubmit}>
           {isRegisterMode ? (
@@ -119,7 +119,7 @@ const Auth = () => {
             required
           />
 
-          <label htmlFor="password">Contrasena</label>
+          <label htmlFor="password">Contraseña</label>
           <input
             id="password"
             name="password"
@@ -142,22 +142,18 @@ const Auth = () => {
           </button>
         </form>
 
-        <button
-          type="button"
+        <Link
           className="auth-toggle-button"
-          onClick={() => {
-            setIsRegisterMode((currentMode) => !currentMode)
-            setForm(initialForm)
-            setError('')
-          }}
+          to={isRegisterMode ? '/login' : '/register'}
+          state={location.state}
         >
           {isRegisterMode
-            ? 'Ya tienes cuenta? Inicia sesion'
-            : 'No tienes cuenta? Registrate'}
-        </button>
+            ? '¿Ya tenés cuenta? Iniciá sesión'
+            : '¿No tenés cuenta? Registrate'}
+        </Link>
 
         <Link className="auth-back-link" to="/">
-          Volver al catalogo
+          Volver al catálogo
         </Link>
       </div>
     </section>

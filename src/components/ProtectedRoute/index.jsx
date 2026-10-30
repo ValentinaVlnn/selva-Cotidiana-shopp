@@ -10,7 +10,7 @@ const ProtectedRoute = () => {
     return (
       <section className="auth-page">
         <div className="auth-card">
-          <p className="auth-loading-message">Validando tu sesion...</p>
+          <p className="auth-loading-message">Validando tu sesión...</p>
         </div>
       </section>
     )
@@ -23,7 +23,7 @@ const ProtectedRoute = () => {
         replace
         state={{
           from: location,
-          message: 'Debes iniciar sesion para acceder al checkout.',
+          message: 'Iniciá sesión para completar tu compra. Tu carrito se mantiene.',
         }}
       />
     )

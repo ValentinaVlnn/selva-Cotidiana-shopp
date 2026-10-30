@@ -7,8 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "mock:test": "node scripts/checkAsyncMock.mjs"
+    "preview": "vite preview"
   },
   "dependencies": {
     "firebase": "^11.10.0",
